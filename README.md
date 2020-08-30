@@ -1,5 +1,7 @@
 # Little Computer 3 Inspired Virtual Machine in C - V1
 
+Project inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`
+
 ## Architecture
 16-bit address space
 16-bit operators and operands
@@ -9,8 +11,8 @@ Flags:
 * flag_gt: Flag set by CMP when accumulator > operand. Used by JGT.
 * flag_lt: Flag set by CMP when accumulator < operand. Used by JLT.
 * flag_eq: Flag set by CMP when accumulator = operand. Used by JEQ.
-* flag_underflow: Set if arithmetic results in an underflow.
-* flag_overflow:  Set when arithmetic results in an overflow.
+* flag_uf: Set if arithmetic results in an underflow.
+* flag_of:  Set when arithmetic results in an overflow.
 ***ADD TABLE***
 
 Register
@@ -22,7 +24,7 @@ Register
 |general_3      |0011       |Yes            |
 |general_4      |0100       |Yes            |
 |general_5      |0101       |Yes            |
-|general_6      |0110       |Yes            |
+|general_6      |0110       |Yes            |,reg[stack_pointer];
 |general_7      |0111       |Yes            |
 |general_8      |1000       |Yes            |
 |general_9      |1001       |Yes            |
@@ -34,7 +36,7 @@ Register
 |general_15     |1111       |Yes            |
 |stack_base     |N/A*       |No             |
 |stack_pointer  |N/A*       |No             |
-|PC             |N/A*       |No             |
+|Program Counter|N/A*       |No             |
 
 *These registers have dedicated instruction for interacting with them. They are not designed for general purpose use.
 
@@ -71,7 +73,7 @@ Note: DNM is used to denote "Does not matter", these sections are not used by th
 |FRT    |       00011001|Reset flags            |(op-code)          |
 |BSR    |       00011010|Bit shift right        |(op-code)          |
 |BSL    |       00011011|Bit shift left         |(op-code)          |
-|HLT    |       11111111|Halt                   |(op-code)          |
+|HLT    |       00000000|Halt                   |(op-code)          |
 
 ### ADD | Addition
 Carries out binary addition of the accumulator and another provided value, stores result in accumulator.
@@ -291,4 +293,4 @@ Resets all flags.
 Stops execution irreversibly.
 |PC:x            |
 |---             |
-|(11111111)-(DNM)|
+|(0000)-(DNM)|

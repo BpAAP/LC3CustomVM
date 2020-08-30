@@ -71,6 +71,7 @@ Note: DNM is used to denote "Does not matter", these sections are not used by th
 |FRT    |       00011001|Reset flags            |(op-code)          |
 |BSR    |       00011010|Bit shift right        |(op-code)          |
 |BSL    |       00011011|Bit shift left         |(op-code)          |
+|HLT    |       11111111|Halt                   |(op-code)          |
 
 ### ADD | Addition
 Carries out binary addition of the accumulator and another provided value, stores result in accumulator.
@@ -285,3 +286,9 @@ Resets all flags.
 |PC:x            |
 |---             |
 |(00011011)-(DNM)|
+
+### HLT | Halt
+Stops execution irreversibly.
+|PC:x            |
+|---             |
+|(11111111)-(DNM)|

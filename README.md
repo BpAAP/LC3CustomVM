@@ -51,7 +51,7 @@ Note: DNM is used to denote "Does not matter", these sections are not used by th
 |SUB    |       00000010|Subtraction            |(op-code)-(op-args)|
 |AND    |       00000011|Bitwise AND            |(op-code)-(op-args)|
 |NOT    |       00000100|Bitwise NOT            |(op-code)          |
-|OR     |       00000101|Bitwise OR             |(op-code)-(op-args)|
+|IOR     |       00000101|Bitwise OR             |(op-code)-(op-args)|
 |CMP    |       00000110|Comparison             |(op-code)-(op-args)|
 |JMP    |       00000111|Jump (Always)          |(op-code)-(op-args)|
 |JEQ    |       00001000|Jump If Equal          |(op-code)-(op-args)|
@@ -125,11 +125,13 @@ Not operation only possible on accumulator, result is stored in accumulator:
 |(00000100)-(DNM)   |
 
 
-### OR  | Bitwise Logical OR
+### IOR  | Bitwise Logical OR (inclusive)
 Identical pattern to Addition, except opcode is 00000101
 
 ### CMP | Compare with accumulator
 Compares value in accumulator with given operand, accumulator value is unchanged, sets appropriate flag: flag_gt, flag_lt, flag_eq.
+
+Ex: if accumulator is greater than operand. flag_gt is set.
 
 Identical pattern to Addition, except opcode is 00000110.
 

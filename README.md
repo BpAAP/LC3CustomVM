@@ -24,7 +24,7 @@ Register
 |general_3      |0011       |Yes            |
 |general_4      |0100       |Yes            |
 |general_5      |0101       |Yes            |
-|general_6      |0110       |Yes            |,reg[stack_pointer];
+|general_6      |0110       |Yes            |
 |general_7      |0111       |Yes            |
 |general_8      |1000       |Yes            |
 |general_9      |1001       |Yes            |

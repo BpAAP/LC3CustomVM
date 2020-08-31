@@ -1,0 +1,4 @@
+LDT R:0 D:10
+ADD D:20
+CMP D:22
+HLT

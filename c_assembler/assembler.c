@@ -34,15 +34,21 @@ void setOpStrs(){
     opStrs[26]="BSL";
 }
 
+enum {
+    HLT=0,ADD,SUB,AND,NOT,IOR,CMP,JMP,JEQ,JGT,JLT,SDT,LDT,MOV,
+        PSH,POP,PSA,POA,JSR,RSR,SSB,SRT,JOF,JUF,FRT,BSR,BSL
+};
 
-int parseOpcode(char line[256]){
+int debug = 0;
+
+int16_t parseOpcode(char line[256]){
     char opStr[3];
     opStr[0] = line[0];
     opStr[1] = line[1];
     opStr[2] = line[2];
     int opCode;
 
-    for (int i = 0; i<27;i++){
+    for (int16_t i = 0; i<27;i++){
         if(!strcmp(opStr, opStrs[i])){
             return i;
         }
@@ -80,10 +86,37 @@ int main(int argc,const char* argv[]){
     }
 
     char line[256];
+    int i = 0;
     while (fgets(line,sizeof(line),in_file)){
-        int opcode = 0;
-        opcode = parseOpcode(line);
-        printf("%s \n",opStrs[opcode]);
+        int16_t opcode = parseOpcode(line);
+        int16_t instruction = 0;
+        switch(opcode){
+            case HLT:
+                if(debug){printf("HLT\n");}
+                instruction = 0;
+                break;
+
+            case ADD:
+                instruction = 1<<8;
+                if(!strcmp(line[4],"D")){
+                    if(debug){printf("ADD from data\n");}
+                    instruction += 2<<4;
+                    memory[i] = instruction;
+                    memory[i+1] = parseInt();
+                    i += 2;
+
+                }else if(!strcmp(line[4],"A")){
+
+                }else if(!strcmp(line[4],"R")){
+                    
+                }
+
+            default:
+                printf("Got default case.");
+                exit(3);
+                break;
+        }
+        
     }
 
     // memory[0] = (1<<8);

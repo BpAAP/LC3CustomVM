@@ -1,6 +1,7 @@
 import sys
 input_path = sys.argv[1]
-output_path = sys.argv[2]
+output_path = input_path[:-4] + "bin"
+print(output_path)
 
 f_in = open(input_path,"r")
 f_out = open(output_path,"wb")

@@ -40,10 +40,17 @@ int readImage(const char* path){
         return 0;
     }else{
         
-        fread(&origin,1,1,file);
-        printf("%i\n",origin);
+        //fread(&origin,1,1,file);
+        //printf("%i\n",origin);
         fread(memory,sizeof(uint16_t),UINT16_MAX,file);
         fclose(file);
+        
+        int16_t i = 0;
+        while (i<INT16_MAX)
+        {
+        memory[i] = (memory[i]<<8) | (memory[i]>>8);
+        i = i+1;
+        }
     }
     return 1;
 }
@@ -99,14 +106,17 @@ int main(int argc,const char* argv[]){
         uint16_t current_instruction = memory[reg[PC]];
         uint16_t opcode = current_instruction >> 8;
         
-        uint16_t oparg1 = (current_instruction << 8) >> 12;
-        uint16_t oparg2 = (current_instruction << 12) >> 12;
+        uint16_t oparg1 = (current_instruction << 8);
+        oparg1 = oparg1 >> 12;
+        uint16_t oparg2 = (current_instruction << 12);
+        oparg2 = oparg2 >> 12;
         address = 0;
         data = 0;
 
         printf("Current instruction:%i\n",current_instruction);
-        printf("Next instruction:%i\n",memory[reg[PC]+1]);
         printf("Opcode:%i\n",opcode);
+        printf("Oparg1:%i\n",oparg1);
+        printf("Oprag2:%i\n",oparg2);
 
         if(debug){printf("PC: %i\n",reg[PC]);}
         switch(opcode){

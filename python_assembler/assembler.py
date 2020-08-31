@@ -89,12 +89,12 @@ for line in in_lines:
 
 memory += [0 for _ in range(65536-len(memory))]
 
-memory = [99] + memory
 for command in assemblerCommands:
     if command[0][1:] == "SET":
-        address = command[1]
-        value = command[2]
-        memory[address] = value
+        address = int(command[1])*2
+        value = int(command[2])
+        memory[address] = value>>8
+        memory[address+1] = value %256
 
 
 for i in range(len(memory)):

@@ -74,6 +74,7 @@ Note: DNM is used to denote "Does not matter", these sections are not used by th
 |BSR    |       00011010|Bit shift right        |(op-code)          |
 |BSL    |       00011011|Bit shift left         |(op-code)          |
 |HLT    |       00000000|Halt                   |(op-code)          |
+|NOP    |       00011100|No-op                  |(op-code)          |
 
 ### ADD | Addition
 Carries out binary addition of the accumulator and another provided value, stores result in accumulator.
@@ -296,3 +297,9 @@ Stops execution irreversibly.
 |PC:x            |
 |---             |
 |(0000)-(DNM)|
+
+### NOP |No-op
+No operation happens.
+|PC:x            |
+|---             |
+|(00011100)-(DNM)|

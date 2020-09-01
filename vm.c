@@ -16,7 +16,8 @@ uint16_t reg[PC];
 //Creating OPcodes
 enum {
     HLT=0,ADD,SUB,AND,NOT,IOR,CMP,JMP,JEQ,JGT,JLT,SDT,LDT,MOV,
-        PSH,POP,PSA,POA,JSR,RSR,SSB,SRT,JOF,JUF,FRT,BSR,BSL
+        PSH,POP,PSA,POA,JSR,RSR,SSB,SRT,JOF,JUF,FRT,BSR,BSL,
+        NOP
 };
 
 //Creating Flags
@@ -135,6 +136,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("ADD| Read %i from register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -142,6 +144,7 @@ int main(int argc,const char* argv[]){
                     
                         if(debug){printf("ADD| Read %i from address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                     case 2:
                         //Operand is in next address
                         address = reg[PC]+1;
@@ -149,6 +152,7 @@ int main(int argc,const char* argv[]){
                     
                         if(debug){printf("ADD| Read %i from (next) address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }
                 if (data+reg[acc]>UINT16_MAX){
                     flag[of] = 1;
@@ -169,6 +173,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("SUB| Read %i from register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -176,6 +181,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("SUB| Read %i from address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                     case 2:
                         //Operand is in next address
                         address = reg[PC]+1;
@@ -183,6 +189,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("SUB| Read %i from (next) address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }
                 if(reg[acc]-data < 0){
                     reg[acc] = (reg[acc] - data);
@@ -201,6 +208,7 @@ int main(int argc,const char* argv[]){
                         reg[acc] = reg[acc] & data;
                         if(debug){printf("AND| Read %i from register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -208,6 +216,7 @@ int main(int argc,const char* argv[]){
                         reg[acc] = reg[acc] & data;
                         if(debug){printf("AND| Read %i from address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                     case 2:
                         //Operand is in next address
                         address = reg[PC]+1;
@@ -215,6 +224,7 @@ int main(int argc,const char* argv[]){
                         reg[acc] = reg[acc] & data;
                         if(debug){printf("AND| Read %i from (next) address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }                
                 break;
 
@@ -234,6 +244,7 @@ int main(int argc,const char* argv[]){
                         reg[acc] = reg[acc] | data;
                         if(debug){printf("IOR| Read %i from register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -241,6 +252,7 @@ int main(int argc,const char* argv[]){
                         reg[acc] = reg[acc] | data;
                         if(debug){printf("IOR| Read %i from address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                     case 2:
                         //Operand is in next address
                         address = reg[PC]+1;
@@ -248,6 +260,7 @@ int main(int argc,const char* argv[]){
                         reg[acc] = reg[acc] | data;
                         if(debug){printf("IOR| Read %i from (next) address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }          
                 break;
 
@@ -259,6 +272,7 @@ int main(int argc,const char* argv[]){
                         data = reg[oparg2];
                         if(debug){printf("CMP| Read %i from register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -266,6 +280,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("CMP| Read %i from address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                     case 2:
                         //Operand is in next address
                         address = reg[PC]+1;
@@ -273,6 +288,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("CMP| Read %i from (next) address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }
                 if(reg[acc]>data){
                     flag[gt] = 1;
@@ -368,6 +384,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("PSH| Read %i from register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -375,6 +392,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("PSH| Read %i from address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                     case 2:
                         //Operand is in next address
                         address = reg[PC]+1;
@@ -382,6 +400,7 @@ int main(int argc,const char* argv[]){
                         
                         if(debug){printf("PSH| Read %i from (next) address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }
                 memory[reg[stack_pointer]] = data;
                 reg[stack_pointer] -= 1;
@@ -396,6 +415,7 @@ int main(int argc,const char* argv[]){
                         reg[oparg2] = data;
                         if(debug){printf("POP| Wrote %i to register %i\n",data,oparg2);}
                         reg[PC] +=1;
+                        break;
                     case 1:
                         //Operand is from address
                         address = readAddress(reg[PC]+1);
@@ -403,6 +423,7 @@ int main(int argc,const char* argv[]){
                         memory[address] = data;
                         if(debug){printf("POP| Wrote %i to address %i\n",data,address);}
                         reg[PC] +=2;
+                        break;
                 }
                 if (!(reg[stack_pointer]==reg[stack_base])){
                     reg[stack_pointer] -= 1;
@@ -455,12 +476,14 @@ int main(int argc,const char* argv[]){
                         data = readAddress(address);
                         reg[stack_base] = data;
                         if(debug){printf("SSB| Set stack base to %i from address %i\n",data,address);}
+                        break;
                     case 1:
                         //From next address
                         address = reg[PC]+1;
                         data = readAddress(address);
                         reg[stack_base] = data;
-                        if(debug){printf("SSB| Set stack base to %i from (next) address %i\n",data,address);}    
+                        if(debug){printf("SSB| Set stack base to %i from (next) address %i\n",data,address);}
+                        break;    
                 }
                 reg[PC] +=2;
                 break;
@@ -520,6 +543,10 @@ int main(int argc,const char* argv[]){
                 reg[PC] += 1;
                 if(debug){printf("BSL| Bit shift left\n");}
                 break;
+            
+            case NOP:
+                //NOP CODE
+                reg[PC] += 1;
 
             default:
                 active = 0;

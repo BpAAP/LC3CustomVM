@@ -116,7 +116,7 @@ int main(int argc,const char* argv[]){
         // printf("Opcode:%i\n",opcode);
         // printf("Oparg1:%i\n",oparg1);
         // printf("Oprag2:%i\n",oparg2);
-        if(debug){printf("----------");}
+        if(debug){printf("----------\n");}
         if(debug){printf("PC: %i\n",reg[PC]);}
         if(debug){printf("ACC: %i\n",reg[acc]);}
         switch(opcode){
@@ -375,7 +375,7 @@ int main(int argc,const char* argv[]){
 
             case PSH:
                 //PSH CODE
-                data;
+                
                 switch(oparg1){
                     case 0:
                         //Operand is in register
@@ -407,6 +407,9 @@ int main(int argc,const char* argv[]){
 
             case POP:
                 //POP CODE
+                if (!(reg[stack_pointer]==reg[stack_base])){
+                    reg[stack_pointer] += 1;
+                }   
                 switch(oparg1){
                     case 0:
                         //Operand is in register
@@ -424,16 +427,15 @@ int main(int argc,const char* argv[]){
                         reg[PC] +=2;
                         break;
                 }
-                if (!(reg[stack_pointer]==reg[stack_base])){
-                    reg[stack_pointer] -= 1;
-                }             
+                          
                 break;
 
             case PSA:
                 //PSA CODE
                 for (int i = 0; i<=g15;i++){
-                    memory[stack_pointer] = reg[i];
+                    memory[reg[stack_pointer]] = reg[i];
                     reg[stack_pointer] -= 1;
+                    if(debug){printf("%i: %i\n",i,reg[i]);}
                 }
                 if(debug){printf("PSA| Pushed all to stack\n");}
                 reg[PC] +=1;
@@ -441,9 +443,10 @@ int main(int argc,const char* argv[]){
 
             case POA:
                 //POA CODE
-                for (int i = 0; i<=g15;i++){
-                    reg[i] = memory[stack_pointer];
+                for (int i = 15; i>=0;i--){
                     reg[stack_pointer] += 1;
+                    reg[i] = memory[reg[stack_pointer]];
+                    if(debug){printf("%i: %i\n",i,reg[i]);}
                 }
                 if(debug){printf("POA| Pulled all\n");}
                 reg[PC] +=1;
@@ -455,13 +458,14 @@ int main(int argc,const char* argv[]){
                 memory[reg[stack_pointer]] = reg[PC]+2;
                 reg[stack_pointer] -= 1;
                 reg[PC] = address;
-                if(debug){printf("JSR| Jumped to subroutine at %i\n",address);}
+                if(debug){printf("JSR| Jumped to subroutine at %i,pushed %i\n",address,memory[reg[stack_pointer]+1]);}
                 break;
 
             case RSR:
                 //RSR CODE
-                address = readAddress(reg[stack_pointer]);
                 reg[stack_pointer] += 1;
+                address = readAddress(reg[stack_pointer]);
+                
                 reg[PC] = address;
                 if(debug){printf("RSR| Returned from subroutine to %i\n",address);}
                 break;
@@ -545,7 +549,9 @@ int main(int argc,const char* argv[]){
             
             case NOP:
                 //NOP CODE
+                if(debug){printf("NOP| No-op\n");}
                 reg[PC] += 1;
+                break;
 
             default:
                 active = 0;

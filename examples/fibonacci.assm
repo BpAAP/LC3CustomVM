@@ -1,0 +1,22 @@
+@SET 100 0
+@SET 101 1
+LDT R:0 A:100
+LDT R:1 A:101
+
+#Loop starts here
+@SET LABEL LOOP
+FRT
+MOV R:0 R:2
+ADD R:1
+MOV R:2 R:1
+
+#Check if greater than 100
+CMP D:200
+
+#If greater jump out of loop
+JGT A:@GET LABEL END
+#If not greater jump to start of loop
+JMP A:@GET LABEL LOOP
+
+@SET LABEL END
+HLT

@@ -12,7 +12,7 @@ memory = []
 #Opcode list for easily converting between opname and opcode
 opcodes = ["HLT","ADD","SUB","AND","NOT","IOR","CMP",
             "JMP","JEQ","JGT","JLT","SDT","LDT","MOV","PSH","POP",
-            "PSA","JSR","RSR","SSB","SRT","JOF","JUF","FRT","BSR",
+            "PSA","POA","JSR","RSR","SSB","SRT","JOF","JUF","FRT","BSR",
             "BSL","NOP"]
 
 #List for string post-assembly instructions
@@ -20,10 +20,6 @@ assemblerCommands = []
 
 #Read input file into list by lines
 in_lines = f_in.readlines()
-
-#Remove empty lines
-while "/n" in in_lines:
-    in_lines.remove("/n")
 
 #Make dictionary for assembly-time labels
 lables = {}
@@ -42,6 +38,26 @@ opsLen4 = ["ADD D","SUB D","AND D","IOR D","CMP D","PSH D",
             "JMP","JEQ","JGT","JLT","JSR","JOF","JUF",
             "SDT","LDT",
             "POP A","SSB"]
+
+#Add newline to last line if not present
+if(-1!=in_lines[-1]):
+    in_lines[-1] = in_lines[-1] + '\n'
+
+#Remove comments
+for i in range(len(in_lines)):
+    if (-1 != in_lines[i].find("#")):
+        pos = in_lines[i].find("#")
+        in_lines[i] = (in_lines[i])[:pos] + '\n'
+
+#Remove empty lines
+toremove = []
+for line in in_lines:
+    if line == "\n":
+        toremove.append(line)
+
+for line in toremove:
+    in_lines.remove(line)
+
 
 #Assembler instructions to remove pre-assembly
 toremove = []
@@ -79,6 +95,9 @@ for i in range(len(in_lines)):
         label = (in_lines[i])[start+11:][:-1]
         address = lables[label]
         in_lines[i] = in_lines[i][:6] + str(address)
+
+for line in in_lines:
+    print(line)
 
 
 #Run assembly loop

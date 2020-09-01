@@ -1,0 +1,44 @@
+#Save some values to memory
+@SET 300 9
+@SET 301 8
+@SET 302 7
+@SET 303 6
+
+#Set up stack at address 200
+#Remember stack grows downwards
+SSB A:2000
+SRT
+
+#Load values into some registers
+LDT R:0 A:300
+LDT R:1 A:301
+LDT R:2 A:302
+LDT R:3 A:303
+
+#Do some maths
+ADD R:1
+ADD R:2
+ADD R:3
+
+#PUSH all registers to stack
+PSA
+#Go to subroutine
+JSR A:@GET LABEL SUBROUTINE
+#Subroutine returns here
+NOP
+#now restore all registers
+POA
+#To prove that everything is restored reverse the maths from before
+SUB R:1
+SUB R:2
+SUB R:3
+SUB A:300
+#If accumulator ends with value 0 then everything worked well
+HLT
+
+#This is the subroutine
+@SET LABEL SUBROUTINE
+#Modify registers
+ADD R:1
+#Return from subroutine
+RSR

@@ -18,6 +18,7 @@ Examples:
 `@SET A D`   Set value `D` in memory at address `A`.
 `@SET LABEL X` Associate the address of the next instruction with the lable `X`
 `@GET LABEL X` Get the address that the lable `X` is referring to.
+`#` Precedes a comment. Do not use `#` after a `@` on the same line as these interfere with each other.
 
 
 

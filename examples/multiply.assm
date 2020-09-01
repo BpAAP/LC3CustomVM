@@ -1,0 +1,25 @@
+@SET 299 0 #Make sure we have a 0 value 
+@SET 300 7 #First number: Let this be A
+@SET 301 22 #Second number: Let this be B
+
+
+LDT R:0 A:299 #Load 0 into the accumulator
+LDT R:1 A:300 #Load A into R:1
+LDT R:2 A:301 #Load B into R:2
+
+@SET LABEL LOOP
+FRT
+ADD R:1                 #Add A to total    
+MOV R:0 R:3             #Store away total
+MOV R:2 R:0             #Load B
+SUB D:1                 #Reduce B by 1
+CMP D:1                 #Compare B with 2
+JLT A:@GET LABEL END
+MOV R:0 R:2             #Store B
+MOV R:3 R:0             #Load total
+JMP A:@GET LABEL LOOP
+
+
+@SET LABEL END
+MOV R:3 R:0             #Recover total
+HLT

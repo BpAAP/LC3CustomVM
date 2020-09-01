@@ -83,15 +83,13 @@ int main(int argc,const char* argv[]){
     }
 
     //Check if debugging mode is on
-    // printf("%s",argv[2]);
-    // if (!(argv[2])){
-    //     if(!strcmp(argv[2],"-Debug")){
-    //         printf("Debugging messages enabled.\n");
-    //         debug = 1;
-    //     }
-    // }
-    debug = 1;
-
+   
+    if (argc > 2){
+        if(!strcmp(argv[2],"-Debug")){
+            printf("Debugging messages enabled.\n");
+            debug = 1;
+        }
+    }
     //Address 0 is reset vector, set PC to its value.
 
     reg[PC] = 0;
@@ -114,10 +112,10 @@ int main(int argc,const char* argv[]){
         address = 0;
         data = 0;
 
-        printf("Current instruction:%i\n",current_instruction);
-        printf("Opcode:%i\n",opcode);
-        printf("Oparg1:%i\n",oparg1);
-        printf("Oprag2:%i\n",oparg2);
+        // printf("Current instruction:%i\n",current_instruction);
+        // printf("Opcode:%i\n",opcode);
+        // printf("Oparg1:%i\n",oparg1);
+        // printf("Oprag2:%i\n",oparg2);
 
         if(debug){printf("PC: %i\n",reg[PC]);}
         switch(opcode){

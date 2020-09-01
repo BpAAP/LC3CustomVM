@@ -1,6 +1,16 @@
 # Little Computer 3 Inspired Virtual Machine in C - V1
 
-Project inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`
+Project originally inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`. Although in practice the two projects are quite different and completly incompatible.
+
+## Summary
+A vm in C working on a custom instruction set. 
+
+## Quick Start
+1. See `README.md` in the `python_assembler` for how to write in assembly.
+2. To assemble:
+    * `make _yourfile_.bin` from this directory, `_yourfile_.assm` must also be in this directory.
+    * Generally: run `python_assembler/assembler.py` and pass the path of `_yourfile_.assm`. `_yourfile_.bin` will be created in `python_assembler`
+3. Run on vm with `./vm _yourfile_.bin` add `-Debug` for debug print statements.
 
 ## Architecture
 16-bit address space

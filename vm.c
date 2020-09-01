@@ -116,8 +116,9 @@ int main(int argc,const char* argv[]){
         // printf("Opcode:%i\n",opcode);
         // printf("Oparg1:%i\n",oparg1);
         // printf("Oprag2:%i\n",oparg2);
-
+        if(debug){printf("----------");}
         if(debug){printf("PC: %i\n",reg[PC]);}
+        if(debug){printf("ACC: %i\n",reg[acc]);}
         switch(opcode){
             case HLT:
                 //HLT code
@@ -312,7 +313,7 @@ int main(int argc,const char* argv[]){
                 if(flag[eq]){
                     address = readAddress(reg[PC]+1);
                     reg[PC] = address;
-                    reg[eq] = 0;
+                    flag[eq] = 0;
                     if(debug){printf("JEQ| Jumped to %i\n",address);}
                 } else{
                     reg[PC] +=2;
@@ -325,7 +326,7 @@ int main(int argc,const char* argv[]){
                 if(flag[gt]){
                     address = readAddress(reg[PC]+1);
                     reg[PC] = address;
-                    reg[gt] = 0;
+                    flag[gt] = 0;
                     if(debug){printf("JGT| Jumped to %i\n",address);}
                 } else{
                     reg[PC] +=2;
@@ -338,7 +339,7 @@ int main(int argc,const char* argv[]){
                 if(flag[lt]){
                     address = readAddress(reg[PC]+1);
                     reg[PC] = address;
-                    reg[lt] = 0;
+                    flag[lt] = 0;
                     if(debug){printf("JLT| Jumped to %i\n",address);}
                 } else{
                     reg[PC] +=2;
@@ -498,7 +499,7 @@ int main(int argc,const char* argv[]){
                 if(flag[of]){
                     address = readAddress(reg[PC]+1);
                     reg[PC] = address;
-                    reg[of] = 0;
+                    flag[of] = 0;
                     if(debug){printf("JOF| Jumped to %i\n",address);}
                 } else{
                     reg[PC] +=2;
@@ -511,7 +512,7 @@ int main(int argc,const char* argv[]){
                 if(flag[uf]){
                     address = readAddress(reg[PC]+1);
                     reg[PC] = address;
-                    reg[uf] = 0;
+                    flag[uf] = 0;
                     if(debug){printf("JUF| Jumped to %i\n",address);}
                 } else{
                     reg[PC] +=2;

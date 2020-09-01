@@ -1,0 +1,59 @@
+#Input base
+@SET 300 5
+#Input exponent
+@SET 301 5
+
+LDT R:0 A:301
+SUB D:1
+MOV R:0 R:1
+LDT R:0 A:300
+LDT R:2 A:300
+#So base is in R:2 
+#Exponent is in R:1
+#Total is in R:0
+@SET LABEL LOOP_OUTER
+PSH R:2
+PSH R:1
+JSR A:@GET LABEL MULTIPLY
+POP R:1
+POP R:2
+MOV R:0 R:3
+MOV R:1 R:0
+SUB D:1
+CMP D:0
+JEQ A:@GET LABEL END_OUTER
+MOV R:0 R:1
+MOV R:3 R:0
+JMP A:@GET LABEL LOOP_OUTER
+
+
+@SET LABEL END_OUTER
+MOV R:3 R:0
+HLT
+
+#----------------------------------------------------------
+@SET 299 0
+@SET LABEL MULTIPLY
+#Register are still in the same state as where MULTIPLY was called from
+
+MOV R:0 R:1 #Load A into R:1
+#B already in R:2
+LDT R:0 A:299 #Load 0 into the accumulator
+
+
+@SET LABEL LOOP
+FRT
+ADD R:1                 #Add A to total    
+MOV R:0 R:3             #Store away total
+MOV R:2 R:0             #Load B
+SUB D:1                 #Reduce B by 1
+CMP D:1                 #Compare B with 2
+JLT A:@GET LABEL END
+MOV R:0 R:2             #Store B
+MOV R:3 R:0             #Load total
+JMP A:@GET LABEL LOOP
+
+
+@SET LABEL END
+MOV R:3 R:0             #Recover total
+RSR

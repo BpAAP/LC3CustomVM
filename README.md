@@ -1,6 +1,6 @@
 # Little Computer 3 Inspired Virtual Machine in C - V1
 
-Project originally inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`. Although in practice the two projects are quite different and completly incompatible.
+Project originally inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`. Although in practice the two projects ended up working quite differently and completly incompatible.
 
 ## Summary
 A vm in C working on a custom instruction set. 

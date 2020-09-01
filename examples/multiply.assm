@@ -1,6 +1,6 @@
 @SET 299 0 #Make sure we have a 0 value 
-@SET 300 7 #First number: Let this be A
-@SET 301 22 #Second number: Let this be B
+@SET 300 6 #First number: Let this be A
+@SET 301 23 #Second number: Let this be B
 
 
 LDT R:0 A:299 #Load 0 into the accumulator

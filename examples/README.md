@@ -16,3 +16,15 @@ Loads some data from memory to some registers, then does some math. It then push
 Then it does the opposite of the maths before and ends up with `ACC: #`.
 Run it with the `-Debug` option and see the values grow in the accumulator. (`ACC: #`).
 
+## Factorial
+Uses the multiply program above inside a subroutine. 
+Run it with the `-Debug` option and see the values grow in the accumulator. (`ACC: #`).
+The final value given by `ACC: #` is the result of the multiplication.
+
+## Power
+Uses the multiply program above inside a subroutine. 
+Run it with the `-Debug` option and see the values grow in the accumulator. (`ACC: #`).
+The final value given by `ACC: #` is the result of the multiplication.
+
+# Infinite Counter
+Accumulator counts up forever.

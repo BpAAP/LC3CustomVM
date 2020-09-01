@@ -96,8 +96,8 @@ for i in range(len(in_lines)):
         address = lables[label]
         in_lines[i] = in_lines[i][:6] + str(address)
 
-for line in in_lines:
-    print(line)
+# for line in in_lines:
+#     print(line)
 
 
 #Run assembly loop

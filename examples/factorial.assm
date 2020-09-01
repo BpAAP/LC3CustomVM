@@ -1,0 +1,52 @@
+#Input number
+@SET 301 7
+#Have a 1 value
+@SET 300 1
+
+LDT R:2 A:301 #R:2 will store the counter, counting down
+LDT R:0 A:300 #total starting at 1
+
+@SET LABEL LOOP_OUTER
+#Giving MULTIPLY R:0 and R:2
+PSH R:2
+JSR A:@GET LABEL MULTIPLY
+POP R:2
+MOV R:0 R:3
+MOV R:2 R:0
+SUB D:1
+CMP D:0
+JEQ A:@GET LABEL END_OUTER
+FRT
+MOV R:0 R:2
+MOV R:3 R:0
+JMP A:@GET LABEL LOOP_OUTER
+
+@SET LABEL END_OUTER
+MOV R:3 R:0
+HLT
+
+#----------------------------------------------------------
+@SET 299 0
+@SET LABEL MULTIPLY
+#Register are still in the same state as where MULTIPLY was called from
+
+MOV R:0 R:1 #Load A into R:1
+LDT R:0 A:299 #Load 0 into the accumulator
+#B Already in R:2
+
+@SET LABEL LOOP
+FRT
+ADD R:1                 #Add A to total    
+MOV R:0 R:3             #Store away total
+MOV R:2 R:0             #Load B
+SUB D:1                 #Reduce B by 1
+CMP D:1                 #Compare B with 2
+JLT A:@GET LABEL END
+MOV R:0 R:2             #Store B
+MOV R:3 R:0             #Load total
+JMP A:@GET LABEL LOOP
+
+
+@SET LABEL END
+MOV R:3 R:0             #Recover total
+RSR

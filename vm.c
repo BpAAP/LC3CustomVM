@@ -4,7 +4,7 @@
 #include <string.h>
 
 //Creating Memory
-uint16_t memory[UINT16_MAX];
+uint16_t* memory;
 
 //Creating Registers
 enum {acc=0,g1,g2,g3,g4,g5,g6,g7,g8,g9,g10,g11,g12,g13,g14,
@@ -34,6 +34,8 @@ uint16_t readAddress(uint16_t address){
 
 int readImage(const char* path){
     uint16_t origin;
+
+    
     
     FILE* file = fopen(path,"rb");
     
@@ -57,6 +59,7 @@ int readImage(const char* path){
 }
 
 int main(int argc,const char* argv[]){
+    memory = (uint16_t*)calloc(UINT16_MAX,sizeof(uint16_t));
 
     int debug = 0;
 
@@ -100,6 +103,7 @@ int main(int argc,const char* argv[]){
 
     
     int active = 1;
+   
     while (active){
         
         uint16_t current_instruction = memory[reg[PC]];
@@ -295,7 +299,7 @@ int main(int argc,const char* argv[]){
                 } else if (reg[acc]<data){
                     flag[lt] = 1;
                     if(debug){printf("Set less-than\n");}
-                } else if (reg[acc]=data){
+                } else if (reg[acc]==data){
                     flag[eq] = 1;
                     if(debug){printf("Set equal\n");}
                 }
@@ -560,4 +564,6 @@ int main(int argc,const char* argv[]){
 
         }
     }
+    
+    free(memory);
 }

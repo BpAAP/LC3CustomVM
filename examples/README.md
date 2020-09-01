@@ -26,5 +26,5 @@ Uses the multiply program above inside a subroutine.
 Run it with the `-Debug` option and see the values grow in the accumulator. (`ACC: #`).
 The final value given by `ACC: #` is the result of the multiplication.
 
-# Infinite Counter
+## Infinite Counter
 Accumulator counts up forever.

@@ -1,6 +1,15 @@
 # Little Computer 3 Inspired Virtual Machine in C - V1
+A custom virtual machine written in C. With a python assembler and example programs.
 
-Project originally inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`. Although in practice the two projects ended up working quite differently and completly incompatible.
+Project originally inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`. Although in practice the two projects ended up working quite differently and completly incompatible. This main readme file includes the specification for the custom architecture and instruction set.
+
+A python assembler to create executable binary files can be found in the `/python-assembler` folder which has its own readme file with further details.
+
+You will also find examples both in assembly and their compiled binary files in the `/examples` folder. This folder also has its own readme with further details.
+
+This is just version 1. Version 2 will include a simple video interface, as well as keyboard interaction.
+
+For more details check my website at `www.benedekpapp.page`.
 
 ## Summary
 A vm in C working on a custom instruction set. 

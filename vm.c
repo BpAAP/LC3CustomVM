@@ -93,6 +93,16 @@ int main(int argc,const char* argv[]){
             debug = 1;
         }
     }
+
+    int printEndState = 0;
+    //Check if -PrintEndState mode is on
+    if (argc > 2){
+        if(!strcmp(argv[2],"-PrintEndState")){
+            printf("Printing end state:\n");
+            printEndState = 1;
+        }
+    }
+
     //Address 0 is reset vector, set PC to its value.
 
     reg[PC] = 0;
@@ -407,6 +417,10 @@ int main(int argc,const char* argv[]){
                 }
                 memory[reg[stack_pointer]] = data;
                 reg[stack_pointer] -= 1;
+
+                // for (int16_t i = 0;i<10;i++){
+                //     printf("%i\n",memory[reg[stack_pointer]+i]);
+                // }
                 break;
 
             case POP:
@@ -459,10 +473,19 @@ int main(int argc,const char* argv[]){
             case JSR:
                 //JSR CODE
                 address = readAddress(reg[PC]+1);
-                memory[reg[stack_pointer]] = reg[PC]+2;
+                int16_t num_of_args = readAddress(reg[stack_pointer]+1);
+                for (int16_t i = 0;i<num_of_args+2;i++){
+                    memory[reg[stack_pointer]+i] = memory[reg[stack_pointer]+i+1];
+                }
+                
+                int16_t return_address = reg[PC]+2;
+                memory[reg[stack_pointer]+num_of_args+1] = return_address;
                 reg[stack_pointer] -= 1;
                 reg[PC] = address;
-                if(debug){printf("JSR| Jumped to subroutine at %i,pushed %i\n",address,memory[reg[stack_pointer]+1]);}
+                if(debug){printf("JSR| Jumped to subroutine at %i,pushed %i\n",address,return_address);}
+                // for (int16_t i = 0;i<10;i++){
+                //     printf("%i\n",memory[reg[stack_pointer]+i-1]);
+                // }
                 break;
 
             case RSR:
@@ -566,4 +589,5 @@ int main(int argc,const char* argv[]){
     }
     
     free(memory);
+    if(printEndState){printf("Acc final value %i.\n",reg[acc]);}
 }

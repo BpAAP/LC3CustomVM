@@ -11,6 +11,10 @@ This is just version 1. Version 2 will include a simple video interface, as well
 
 For more details check my website at `www.benedekpapp.page`.
 
+Running the vm with the option `-Debug`, will enable debug printing.
+
+Running the vm with the option `-PrintEndState` will print the last value of the accumulator.
+
 ## Summary
 A vm in C working on a custom instruction set. 
 
@@ -253,6 +257,18 @@ All registers are popped from the stack and restored. Designed for use in conjun
 |PC:x                           |
 |---                            |
 |(00010010)-(DNM)               |
+
+Example use with subroutines:
+[Push all registers]
+[Push all arguments for calling the function]
+[Push number of arguments]
+JSR instruction will manipulate stack in background to place the return address before all the arguments using the number of arguments give.
+In subroutine arguments are popped.
+
+Returns are handled by writing to an address given as an argument.
+After subroutine return:
+[Pull all registers]
+[Check the return value that was written to the specified address]
 
 ### JSR | Jump to subroutine 
 Pushes address after JSR to stack, then sets PC to the given address. Designed to be used in conjunction with RSR.

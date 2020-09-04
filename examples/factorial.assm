@@ -1,5 +1,5 @@
 #Input number
-@SET 301 7
+@SET 301 8
 #Have a 1 value
 @SET 300 1
 
@@ -7,10 +7,13 @@ LDT R:2 A:301 #R:2 will store the counter, counting down
 LDT R:0 A:300 #total starting at 1
 
 @SET LABEL LOOP_OUTER
-#Giving MULTIPLY R:0 and R:2
-PSH R:2
+PSA #PUSH all registers to save state
+PSH R:2     #one operand
+PSH R:0     #two operand
+PSH D:2     #Number of arguments passed
 JSR A:@GET LABEL MULTIPLY
-POP R:2
+POA        #Recover registers from stack
+LDT R:0 A:4000  #Load return value from passed address
 MOV R:0 R:3
 MOV R:2 R:0
 SUB D:1
@@ -30,9 +33,11 @@ HLT
 @SET LABEL MULTIPLY
 #Register are still in the same state as where MULTIPLY was called from
 
-MOV R:0 R:1 #Load A into R:1
-LDT R:0 A:299 #Load 0 into the accumulator
-#B Already in R:2
+
+POP R:0 #Number of arguments passed, we can discard this
+POP R:2 #need B in R:2
+POP R:1 #need A in R:1
+LDT R:0 A:299 #need 0 in R:0
 
 @SET LABEL LOOP
 FRT
@@ -48,5 +53,5 @@ JMP A:@GET LABEL LOOP
 
 
 @SET LABEL END
-MOV R:3 R:0             #Recover total
+SDT R:3 A:4000             #Recover total
 RSR

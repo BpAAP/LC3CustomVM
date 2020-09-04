@@ -23,6 +23,7 @@ ADD R:3
 #PUSH all registers to stack
 PSA
 #Go to subroutine
+PSH D:0
 JSR A:@GET LABEL SUBROUTINE
 #Subroutine returns here
 NOP
@@ -39,6 +40,7 @@ HLT
 #This is the subroutine
 @SET LABEL SUBROUTINE
 #Modify registers
+POP R:0
 ADD R:1
 #Return from subroutine
 RSR

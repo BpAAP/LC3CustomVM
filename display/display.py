@@ -35,7 +35,7 @@ def writeCharacter(x,y,char,color):
 def interpret(partA,partB):
     partA = int.from_bytes(partA,byteorder="big",signed=False)
     partB = int.from_bytes(partB,byteorder="big",signed=False)
-    
+    print(partA,partB)
     if (partA>>13)==1 & (partA%256)>>5==1:
         #This is a pixel colouring command
         x = (partA >> 8)%32
@@ -82,14 +82,9 @@ def receive():
     
         partA = clientsocket.recv(2)
         partB = clientsocket.recv(2)
+        
     
         running = interpret(partA,partB)
-    
-
-        partA = clientsocket.recv(2)
-        partB = clientsocket.recv(2)
-        interpret(partA,partB)
-
         pygame.display.update()
 
 while True:

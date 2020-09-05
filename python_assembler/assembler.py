@@ -13,7 +13,7 @@ memory = []
 opcodes = ["HLT","ADD","SUB","AND","NOT","IOR","CMP",
             "JMP","JEQ","JGT","JLT","SDT","LDT","MOV","PSH","POP",
             "PSA","POA","JSR","RSR","SSB","SRT","JOF","JUF","FRT","BSR",
-            "BSL","NOP"]
+            "BSL","NOP","WIO","RIO","SIO"]
 
 #List for string post-assembly instructions
 assemblerCommands = []
@@ -96,8 +96,9 @@ for i in range(len(in_lines)):
         address = lables[label]
         in_lines[i] = in_lines[i][:6] + str(address)
 
-# for line in in_lines:
-#     print(line)
+for line in in_lines:
+    print(line)
+
 
 
 #Run assembly loop
@@ -170,6 +171,10 @@ for line in in_lines:
             memory.append(1<<4)
             memory.append(int(instruction[1][2:])>>8)
             memory.append(int(instruction[1][2:])%256)
+    
+    elif instruction[0] in ["WIO","RIO","SIO"]:
+        memory.append(opcode)
+        memory.append((int(instruction[1][2:])<<4)+int(instruction[2][2:]))
 
     elif instruction[0][0] == "@":
         assemblerCommands.append(instruction)
@@ -177,7 +182,19 @@ for line in in_lines:
 memory += [0 for _ in range(65536*2-len(memory))]
 
 for command in assemblerCommands:
-    if command[0][1:] == "SET":
+    if (command[0][1:] == "SET") & (command[1] == "STRING"):
+        offset = int(command[2])*2
+        string = ""
+        for i in range(len(command)-4):
+            string+= " "
+            string += command[i+3]
+        string = string[2:-1]
+        for i in range(len(string)):
+            memory[offset+2*i+1] = ord(string[i]) 
+            memory[offset+2*i] = int(command[-1])
+            
+
+    elif command[0][1:] == "SET":
         address = int(command[1])*2
         value = int(command[2])
         memory[address] = value>>8

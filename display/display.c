@@ -22,8 +22,8 @@ int main(int argc, char const *argv[])
     struct sockaddr_in serv_addr; 
     int16_t partA = 0;
     int16_t partB = 0;
-    partA += (1<<8)+1+(1<<13)+(1<<5);  //Command for coloring pixel (1,1) (x,y)
-    partB += (15);     //Make it blue      
+    partA += 16705;  //Command for coloring pixel (1,1) (x,y)
+    partB += 3137;     //Make it blue      
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
     { 
@@ -52,10 +52,12 @@ int main(int argc, char const *argv[])
     send(sock , &net_partA, sizeof(partA), 0); 
     send(sock , &net_partB, sizeof(partB), 0);
     printf("Sent colour test.\n"); 
+    printf("Transmitted %i:%i to IO %i\n",partA,partB,0);
+    printf("Transmitted %i:%i to IO %i\n",net_partA,net_partB,0);
 
 
-    partA = (2<<13)+(2<<5)+(2<<8)+2;  //Command for writing character to pixel (2,2) (x,y)
-    partB = (3<<10) + 65;     //Make it green and an 'A'
+    //partA = (2<<13)+(2<<5)+(2<<8)+2;  //Command for writing character to pixel (2,2) (x,y)
+    //partB = (3<<10) + 65;     //Make it green and an 'A'
     net_partA = htons(partA);
     net_partB = htons(partB);
     send(sock , &net_partA, sizeof(partA), 0); 
@@ -77,8 +79,8 @@ int main(int argc, char const *argv[])
         partB = (b<<8) + c;
         net_partA = htons(partA);
         net_partB = htons(partB);
-        send(sock , &net_partA, sizeof(partA), 0); 
-        send(sock , &net_partB, sizeof(partB), 0);
+        //send(sock , &net_partA, sizeof(partA), 0); 
+        //send(sock , &net_partB, sizeof(partB), 0);
 
        
                 

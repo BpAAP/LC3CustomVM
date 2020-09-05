@@ -28,3 +28,6 @@ The final value given by `ACC: #` is the result of the multiplication.
 
 ## Infinite Counter
 Accumulator counts up forever.
+
+## Factorial with display (not functional)
+Same as factorial but produces text output on display module. See the display subfolder for more details.

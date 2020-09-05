@@ -3,6 +3,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <sys/socket.h> 
+#include <arpa/inet.h> 
+#include <unistd.h> 
+
 //Creating Memory
 uint16_t* memory;
 
@@ -13,11 +17,21 @@ enum {acc=0,g1,g2,g3,g4,g5,g6,g7,g8,g9,g10,g11,g12,g13,g14,
 
 uint16_t reg[PC];
 
+//IO functions
+enum {partA,partB};
+enum {IOaA=0,IOaB,IObA,IObB,IOcA,IOcB,IOdA,IOdB};
+int ioToPortMapping[4] ={25560,0,0,0};
+enum {IOaTX=0,IOaRX,IObTX,IObRX,IOcTX,IOcRX,IOdTX,IOdRX};
+
+int16_t IO[IOdB];
+int16_t IOFlags[IOdRX];
+int IOSockets[4];
+
 //Creating OPcodes
 enum {
     HLT=0,ADD,SUB,AND,NOT,IOR,CMP,JMP,JEQ,JGT,JLT,SDT,LDT,MOV,
         PSH,POP,PSA,POA,JSR,RSR,SSB,SRT,JOF,JUF,FRT,BSR,BSL,
-        NOP
+        NOP,WIO,RIO,SIO
 };
 
 //Creating Flags
@@ -35,7 +49,6 @@ uint16_t readAddress(uint16_t address){
 int readImage(const char* path){
     uint16_t origin;
 
-    
     
     FILE* file = fopen(path,"rb");
     
@@ -58,8 +71,40 @@ int readImage(const char* path){
     return 1;
 }
 
+int getSocket(int port){
+    int sock = 0;
+    struct sockaddr_in serv_addr;
+
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
+    { 
+        printf("\n Socket creation error \n"); 
+        return -1; 
+    } 
+
+    serv_addr.sin_family = AF_INET; 
+    serv_addr.sin_port = htons(port); 
+
+    // Convert IPv4 and IPv6 addresses from text to binary form 
+    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
+    { 
+        printf("\nInvalid address/ Address not supported \n"); 
+        return -1; 
+    } 
+   
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
+    { 
+        printf("\nConnection Failed \n"); 
+        return -1; 
+    }
+
+    return sock;
+}
+
 int main(int argc,const char* argv[]){
     memory = (uint16_t*)calloc(UINT16_MAX,sizeof(uint16_t));
+
+    IOSockets[0] =  getSocket(ioToPortMapping[0]);    
+    
 
     int debug = 0;
 
@@ -580,11 +625,49 @@ int main(int argc,const char* argv[]){
                 reg[PC] += 1;
                 break;
 
+            case WIO:
+                //WIO CODE
+                IO[oparg1] = reg[oparg2];
+                reg[PC] +=1;
+                if(debug){printf("WIO| Writing from register %i to IO register %i\n",oparg2,oparg1);}
+                break;
+
+            case RIO:
+                //RIO CODE
+                reg[oparg2] = IO[oparg1];
+                reg[PC] +=1;
+                if(debug){printf("RIO| Read from IO register %i to register %i\n",oparg1,oparg2);}
+                break;
+
+            case SIO:
+                //SIO CODE
+                IOFlags[oparg1*2+oparg2] = 1;
+                reg[PC] +=1;
+                if(debug){printf("SIO| Set IO flag id %i\n",oparg1*2+oparg1);}
+                break;
+
             default:
                 active = 0;
                 printf("ERROR: DEFAULT CASE TRIGGERED\n");
                 break;
 
+        }
+
+        //Handle IO interrupts
+        //Transmits
+        for (int16_t i = 0;i<IOdRX;i += 2){
+            if (IOFlags[i] ==1){
+                int net_partA = htons(IO[i]);
+                int net_partB = htons(IO[i+1]);
+                printf("Transmitted %i:%i to IO %i\n",IO[i],IO[i+1],i/2);
+                
+                send(IOSockets[0],&net_partA,sizeof(IO[i]),0);
+                send(IOSockets[0],&net_partB,sizeof(IO[i+1]),0);
+                IOFlags[i] = 0;
+                IO[i] = 0;
+                IO[i+1] = 0;
+            }
+           
         }
     }
     

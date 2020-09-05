@@ -25,7 +25,7 @@ There are 32-pixels the first 16 bits are responsible for specifying the coordin
 |---            |---            |---            |---            |
 |(010)-(x-coord)|(010)-(y-coord)|(00)-(Red)-(Green)-(Blue)|(ASCII CHAR)    |
 
-### Write Block:
+### Write Block: (not implemented)
 Initiates block writing loop, all future data will be interpreted as text and written line by line. To quit this mode pass the quit command.
 |1st 8-bits     |2nd 8-bits     |3rd 8-bits     |4th 8-bits     |
 |---            |---            |---            |---            |
@@ -38,7 +38,7 @@ Then pass text, as follows:
 
 Lines and the entire screen will wrap.
 
-### Color Block:
+### Color Block: (not implemented)
 Color rectangle with passed color:
 |1st 8-bits     |2nd 8-bits     |3rd 8-bits and 4th 8-bits     |
 |---            |---            |---                           |

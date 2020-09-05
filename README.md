@@ -1,4 +1,4 @@
-# Little Computer 3 Inspired Virtual Machine in C - V1
+# Little Computer 3 Inspired Virtual Machine in C - V1.1
 A custom virtual machine written in C. With a python assembler and example programs.
 
 Project originally inspired by `https://justinmeiners.github.io/lc3-vm/index.html#1:12`. Although in practice the two projects ended up working quite differently and completly incompatible. This main readme file includes the specification for the custom architecture and instruction set.
@@ -98,6 +98,9 @@ Note: DNM is used to denote "Does not matter", these sections are not used by th
 |BSL    |       00011011|Bit shift left         |(op-code)          |
 |HLT    |       00000000|Halt                   |(op-code)          |
 |NOP    |       00011100|No-op                  |(op-code)          |
+|WIO    |       00011101|Write to an IO register|(op-code)-(op-args)|
+|RIO    |       00011110|Read from an IO register|(op-code)-(op-args)|
+|SIO    |       00011111|Set an IO flag         |(op-code)-(op-args)|
 
 ### ADD | Addition
 Carries out binary addition of the accumulator and another provided value, stores result in accumulator.
@@ -338,3 +341,50 @@ No operation happens.
 |PC:x            |
 |---             |
 |(00011100)-(DNM)|
+
+### WIO - Write to IO register from general register
+|PC:x                                       |
+|---                                        |
+|(00011101)-(IO-register-id)-(register-id)  |
+
+where IO register id's are as follows:
+|IO register id |Register name  |
+|---            |---            |
+|0              |IOa PartA      |
+|1              |IOa PartB      |
+|2              |IOb PartA      |
+|3              |IOb PartB      |
+|4              |IOc PartA      |
+|5              |IOc PartB      |
+|6              |IOd PartA      |
+|7              |IOd PartB      |
+
+### RIO - Read from IO register to regular register
+|PC:x                                       |
+|---                                        |
+|(00011110)-(IO-register-id)-(register-id)  |
+
+where IO register id's are as follows:
+|IO register id |Register name  |
+|---            |---            |
+|0              |IOa PartA      |
+|1              |IOa PartB      |
+|2              |IOb PartA      |
+|3              |IOb PartB      |
+|4              |IOc PartA      |
+|5              |IOc PartB      |
+|6              |IOd PartA      |
+|7              |IOd PartB      |
+
+### SIO - Set IO flag, (RX/TX)
+|PC:x                                               |
+|---                                                |
+|(00011111)-(IO-register-id)-(1 for rx, 0 for tx)   |
+
+where IO register id's are as follows:
+|IO register id |Register name  |
+|---            |---            |
+|0              |IOa     |
+|1              |IOb     |
+|2              |IOc       |
+|3              |IOd       |

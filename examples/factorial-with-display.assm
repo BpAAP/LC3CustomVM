@@ -1,0 +1,142 @@
+#Input number
+@SET 301 8
+#Have a 1 value
+@SET 300 1
+
+LDT R:2 A:301 #R:2 will store the counter, counting down
+LDT R:0 A:300 #total starting at 1
+
+@SET LABEL LOOP_OUTER
+PSA #PUSH all registers to save state
+PSH R:2     #one operand
+PSH R:0     #two operand
+PSH D:2     #Number of arguments passed
+JSR A:@GET LABEL MULTIPLY
+POA        #Recover registers from stack
+LDT R:0 A:4000  #Load return value from passed address
+MOV R:0 R:3
+MOV R:2 R:0
+SUB D:1
+CMP D:0
+JEQ A:@GET LABEL END_OUTER
+FRT
+MOV R:0 R:2
+MOV R:3 R:0
+JMP A:@GET LABEL LOOP_OUTER
+
+@SET LABEL END_OUTER
+MOV R:3 R:0
+JMP A:@GET LABEL PRINT_TO_DISPLAY
+HLT
+
+#----------------------------------------------------------
+@SET 299 0
+@SET LABEL MULTIPLY
+#Register are still in the same state as where MULTIPLY was called from
+
+
+POP R:0 #Number of arguments passed, we can discard this
+POP R:2 #need B in R:2
+POP R:1 #need A in R:1
+LDT R:0 A:299 #need 0 in R:0
+
+@SET LABEL LOOP
+FRT
+ADD R:1                 #Add A to total    
+MOV R:0 R:3             #Store away total
+MOV R:2 R:0             #Load B
+SUB D:1                 #Reduce B by 1
+CMP D:1                 #Compare B with 2
+JLT A:@GET LABEL END
+MOV R:0 R:2             #Store B
+MOV R:3 R:0             #Load total
+JMP A:@GET LABEL LOOP
+
+
+@SET LABEL END
+SDT R:3 A:4000             #Recover total
+RSR
+
+#--------------------------------------------------
+
+@SET LABEL PRINT_TO_DISPLAY
+#Current state
+#Factorial input is at address 301
+SDT R:0 A:302
+#Factorial Result is at address 302
+
+#This is the intro text:
+#White characters for "Calculating the factorial of:" white is 63
+@SET STRING 5000 "Calculate the factorial of:" 63
+
+#Lets print this line
+@SET 4002 16705
+LDT R:0 A:4002
+
+@SET 4003 3137
+
+WIO I:0 R:0
+LDT R:5 A:5000
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5001
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5002
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5003
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5004
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5005
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5006
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5007
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5008
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:5009
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
+
+WIO I:0 R:0
+LDT R:5 A:50010
+WIO I:1 R:5
+SIO R:0 D:0
+ADD D:256
